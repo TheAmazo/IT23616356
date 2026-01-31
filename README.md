@@ -8,10 +8,10 @@ This is an automated testing project for the **SwiftTranslator** application (ht
 
 - **Excel-driven test cases**: Read test inputs and expected outputs from `test-data/testcases.xlsx`
 - **Flexible column mapping**: Works with various Excel column names (tcid, testcaseid, name, description, input, expected output, etc.)
-- **Screenshot capture**: All test results are captured with descriptive screenshots saved to `./screenshots/`
 - **HTML reporting**: Comprehensive test report with videos and traces
 - **Positive & Negative tests**: Supports both functional tests and edge cases
 - **Automatic filtering**: Excludes empty rows and UI-only tests
+- **No screenshots**: Tests run without capturing screenshots for faster execution
 
 ### Test Coverage
 
@@ -91,23 +91,10 @@ npm run report
 Opens the Playwright HTML report showing:
 - Test status (passed/failed)
 - Execution time
-- Attached screenshots
-- Test videos
+- Test videos (if enabled)
 - Trace files for detailed debugging
 
-### Screenshots
-Screenshots are automatically saved to `./screenshots/` with naming format:
-```
-{STATUS}_{TEST_ID}_row{EXCEL_ROW}.png
-```
-
-Status codes:
-- **PASS_*** : Positive test with non-empty output
-- **NEG_*** : Negative test result
-- **EMPTY_*** : Test with empty output
-- **NO_OUTPUT_*** : Output could not be detected
-
-Example: `PASS_Pos_Fun_0001_row2.png`
+**Note**: Screenshots are not captured by default. Tests focus on validation without taking screenshots for faster execution.
 
 ---
 
@@ -146,8 +133,8 @@ IT23616356/
 │   └── swifttranslator.excel.spec.js  # Main test file
 ├── test-data/
 │   └── testcases.xlsx                  # Excel test cases
-├── screenshots/                        # Test result screenshots
-├── test-results/                       # Playwright reports
+├── test-results/                       # Playwright test results (auto-generated)
+├── playwright-report/                  # HTML reports (auto-generated)
 ├── playwright.config.js                # Playwright configuration
 ├── package.json                        # Dependencies & scripts
 ├── README.md                           # This file
@@ -169,9 +156,10 @@ IT23616356/
 - File must be in Excel 97-2003 (.xls) or modern format (.xlsx)
 
 ### "No output found"
-**Issue**: Screenshots show "NO_OUTPUT" for translations
+**Issue**: Tests fail with output not found
 - **Solution**: Website may be unresponsive; check https://www.swifttranslator.com/
 - Try running tests again after website is responsive
+- Increase timeout in test configuration if needed
 
 ### Browser Crashes
 **Issue**: "Browser closed with exit code 1"

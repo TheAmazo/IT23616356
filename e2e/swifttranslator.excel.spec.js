@@ -1,13 +1,9 @@
 const { test, expect } = require('@playwright/test');
 const xlsx = require('xlsx');
 const path = require('path');
-const fs = require('fs');
 
 const BASE_URL = 'https://www.swifttranslator.com/';
 const EXCEL_PATH = path.join(process.cwd(), 'test-data', 'testcases.xlsx');
-const ART_DIR = path.join(process.cwd(), 'screenshots');
-
-if (!fs.existsSync(ART_DIR)) fs.mkdirSync(ART_DIR, { recursive: true });
 
 function normKey(s) {
   return String(s ?? '').trim().toLowerCase().replace(/\s+/g, '').replace(/[_-]+/g, '');
@@ -57,21 +53,6 @@ function readExcelCases() {
     })
     .filter((c) => c.input.trim() || c.tcid.trim() || c.name.trim() || c.expected.trim())
     .filter((c) => !c.tcid.toLowerCase().startsWith('pos_ui_'));
-}
-
-function safeSlug(s) {
-  return String(s ?? '').trim().replace(/[^a-zA-Z0-9._-]+/g, '_').slice(0, 120);
-}
-
-async function snap(page, testInfo, name) {
-  const file = `${safeSlug(name)}.png`;
-  const filePath = path.join(ART_DIR, file);
-  try {
-    const buf = await page.screenshot({ path: filePath, fullPage: false });
-    await testInfo.attach(file, { body: buf, contentType: 'image/png' });
-  } catch (e) {
-    console.error(`Failed to take screenshot: ${e.message}`);
-  }
 }
 
 async function readLocatorText(locator) {
@@ -158,23 +139,15 @@ test.describe('SwiftTranslator – Excel Based Tests', () => {
         await page.waitForTimeout(1500);
         const outText = await readLocatorText(output);
         
-        // Switch to Sinhala tab to show output in screenshot
+        // Switch to Sinhala tab to show output
         await clickIfVisible(page, 'Sinhala');
         await page.waitForTimeout(800);
         
-        // Take screenshot showing the Sinhala output
+        // For positive tests, check that output is non-empty
         if (!tc.isNegative) {
-          // For positive tests, check that output is non-empty
-          if (outText.length > 0) {
-            await snap(page, testInfo, `PASS_${id}_row${tc.excelRow}`);
-            expect(true).toBe(true);
-          } else {
-            await snap(page, testInfo, `EMPTY_${id}_row${tc.excelRow}`);
-            expect(true).toBe(true);
-          }
+          expect(outText.length).toBeGreaterThan(0);
         } else {
-          // For negative tests, just log it
-          await snap(page, testInfo, `NEG_${id}_row${tc.excelRow}`);
+          // For negative tests, just pass
           expect(true).toBe(true);
         }
       } else {
@@ -186,11 +159,9 @@ test.describe('SwiftTranslator – Excel Based Tests', () => {
         output = await findOutputLocator(page);
         if (output) {
           await page.waitForTimeout(800);
-          await snap(page, testInfo, `OUTPUT_${id}_row${tc.excelRow}`);
           expect(true).toBe(true);
         } else {
-          // Still no output found, take screenshot anyway showing current state
-          await snap(page, testInfo, `NO_OUTPUT_${id}_row${tc.excelRow}`);
+          // Still no output found, but pass the test
           expect(true).toBe(true);
         }
       }
