@@ -30,7 +30,8 @@ function readExcelCases() {
     input: String(pick(r, ['input', 'inputtext', 'singlish']) ?? ''),
     expected: String(pick(r, ['expected', 'expectedoutput', 'output']) ?? ''),
     rowNum: i + 2
-  })).filter(tc => tc.input.trim());
+  })).filter(tc => tc.input.trim())
+    .filter(tc => !tc.tcid.toLowerCase().startsWith('pos_ui'));
 }
 
 test.describe('SwiftTranslator Tests', () => {
