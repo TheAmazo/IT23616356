@@ -1,26 +1,34 @@
-// @ts-check
-import { defineConfig, devices } from '@playwright/test';
+// playwright.config.js
+const { defineConfig } = require('@playwright/test');
 
-export default defineConfig({
-  testDir: './e2e',
-  fullyParallel: false,
-  forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
+module.exports = defineConfig({
+  testDir: '.',
+  testMatch: /e2e\/.*\.spec\.(js|ts)$/,
+
+  timeout: 90_000,
+  expect: { timeout: 20_000 },
+
+  retries: 0,
   workers: 1,
-  reporter: [['html', { open: 'never' }], ['list']],
-  use: {
-    headless: false,
-    actionTimeout: 30000,
-    navigationTimeout: 60000,
-    screenshot: 'only-on-failure',
-    video: 'off',
-    trace: 'off',
-    baseURL: 'https://www.swifttranslator.com',
-  },
+
+  reporter: [
+    ['list'],
+    ['html', { open: 'never' }],
+  ],
+
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        browserName: 'chromium',
+        headless: false,
+        viewport: { width: 1280, height: 720 },
+        ignoreHTTPSErrors: true,
+        actionTimeout: 20_000,
+        navigationTimeout: 45_000,
+        trace: 'retain-on-failure',
+        video: 'retain-on-failure',
+      },
     },
   ],
 });

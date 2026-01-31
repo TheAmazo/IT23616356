@@ -1,9 +1,31 @@
 {
   "name": "it23616356",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {},
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed --workers=1",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.0"
+  },
+  "description": "- Reads test cases from `test-data/testcases.xlsx` - Runs each row as a Playwright test against `https://www.swifttranslator.com/` - Saves artifacts under `test-results/excel-artifacts`",
+  "main": "playwright.config.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "adler-32": "^1.3.1",
+    "cfb": "^1.2.2",
+    "codepage": "^1.15.0",
+    "crc-32": "^1.2.2",
+    "frac": "^1.1.2",
+    "ssf": "^0.11.2",
+    "wmf": "^1.0.2",
+    "word": "^0.3.0",
+    "xlsx": "^0.18.5"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/TheAmazo/IT23616356.git"
@@ -15,10 +37,5 @@
   "bugs": {
     "url": "https://github.com/TheAmazo/IT23616356/issues"
   },
-  "homepage": "https://github.com/TheAmazo/IT23616356#readme",
-  "devDependencies": {
-    "@playwright/test": "^1.58.0",
-    "@types/node": "^25.1.0",
-    "xlsx": "^0.18.5"
-  }
+  "homepage": "https://github.com/TheAmazo/IT23616356#readme"
 }

@@ -1,0 +1,41 @@
+GitHub Repository Link
+======================
+
+Project: IT23616356 - Excel-Driven Playwright Test Suite for SwiftTranslator
+
+Repository URL: https://github.com/TheAmazo/IT23616356
+
+Setup Instructions
+==================
+
+1. Clone the repository:
+   git clone https://github.com/TheAmazo/IT23616356.git
+   cd IT23616356
+
+2. Install dependencies:
+   npm install
+
+3. Install Playwright browsers:
+   npx playwright install --with-deps
+
+4. Run tests:
+   npm test
+
+5. View results:
+   npm run report
+
+Full documentation is available in README.md in the repository.
+
+Repository Access
+=================
+✓ Repository is PUBLIC and accessible
+✓ All test files are included
+✓ Test data (Excel file) is included
+✓ Configuration files are included
+✓ Git history is preserved
+
+For detailed setup and usage instructions, please refer to:
+- README.md (comprehensive guide)
+- playwright.config.js (configuration)
+- e2e/swifttranslator.excel.spec.js (test implementation)
+- test-data/testcases.xlsx (test cases)
